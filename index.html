@@ -26,5 +26,74 @@ Zos Kia Current`,desc:"Spare's alphabet of desire—craft, charge, and release i
 </script>
   <script>(function(){function m(a){var h=a.getAttribute("href");if(!h)return;try{var u=new URL(h,document.baseURI);if((u.protocol==="http:"||u.protocol==="https:")&&u.host!==location.host){a.target="_blank";a.rel="noopener noreferrer";}}catch(e){}}function s(){document.querySelectorAll("a[href]").forEach(m);}if(document.readyState!=="loading"){s();}else{document.addEventListener("DOMContentLoaded",s);}document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(a){m(a);}},true);})();</script>
   <script type="application/json" data-clippy-inline-media-manifest="1">{"version":1,"slots":[]}</script>
+<style>
+@keyframes lp-star-cycle {
+  0%,100%{color:#a8d8ff;filter:drop-shadow(0 0 4px rgba(168,216,255,.85)) drop-shadow(0 0 10px rgba(168,216,255,.4))}
+  33%{color:#c890ff;filter:drop-shadow(0 0 6px rgba(200,120,255,.9)) drop-shadow(0 0 14px rgba(168,88,255,.5))}
+  66%{color:#6018c0;filter:drop-shadow(0 0 5px rgba(110,40,200,.85)) drop-shadow(0 0 12px rgba(85,21,168,.5))}
+}
+.lp-star{display:block;animation:lp-star-cycle 5s ease-in-out infinite}
+.lp-sigil-infog{margin-top:10px;padding:10px 0 2px;border-top:1px solid rgba(255,255,255,.07)}
+.lp-sig-steps{display:flex;align-items:center;gap:4px;font-size:9px;letter-spacing:.08em;font-family:monospace;color:rgba(255,255,255,.45);flex-wrap:wrap}
+.lp-sig-steps span{white-space:nowrap}
+.lp-sig-arrow{color:rgba(255,255,255,.18);margin:0 1px}
+.lp-sig-example{margin-top:8px;display:flex;align-items:center;gap:6px;font-size:8.5px;font-family:monospace;color:rgba(255,255,255,.28)}
+.lp-sig-strike{color:rgba(255,255,255,.18);text-decoration:line-through}
+.lp-sig-result{color:#a070e0;font-size:15px;line-height:1;margin-left:2px}
+</style>
+<script>
+(function(){
+  var GLYPHS=['✦','◬','☥','⟡','✶','⌖'];
+  var STAR='M16 1.5L17.8 13.2 29.5 16 17.8 18.8 16 30.5 14.2 18.8 2.5 16 14.2 13.2Z';
+  function mkStar(delay){
+    var s=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    s.setAttribute('width','18');s.setAttribute('height','18');
+    s.setAttribute('viewBox','0 0 32 32');
+    s.classList.add('lp-star');
+    s.style.animationDelay=delay+'s';
+    var p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',STAR);p.setAttribute('fill','currentColor');
+    s.appendChild(p);return s;
+  }
+  function addSigilInfo(card){
+    var existing=card.querySelector('.lp-sigil-infog');
+    if(existing)return;
+    var infog=document.createElement('div');
+    infog.className='lp-sigil-infog';
+    infog.innerHTML='<div class="lp-sig-steps">'
+      +'<span>1· WRITE</span><span class="lp-sig-arrow">▸</span>'
+      +'<span>2· VOID</span><span class="lp-sig-arrow">▸</span>'
+      +'<span>3· SIGILLIZE</span><span class="lp-sig-arrow">▸</span>'
+      +'<span>4· FIRE &amp; FORGET</span>'
+      +'</div>'
+      +'<div class="lp-sig-example">'
+      +'<span class="lp-sig-strike">I WISH FOR POWER</span>'
+      +'<span class="lp-sig-arrow">▸</span>'
+      +'<span class="lp-sig-result">⌖</span>'
+      +'</div>';
+    var last=card.querySelector('p:last-of-type')||card.lastElementChild;
+    if(last)last.after(infog);
+  }
+  function patch(){
+    var cards=document.querySelectorAll('.glow-card');
+    if(!cards.length)return false;
+    cards.forEach(function(card,i){
+      card.querySelectorAll('div').forEach(function(d){
+        var t=d.textContent.trim();
+        if(GLYPHS.indexOf(t)!==-1&&!d.querySelector('svg')){
+          d.textContent='';
+          d.appendChild(mkStar(i*0.6));
+        }
+      });
+      if(i===5)addSigilInfo(card);
+    });
+    return true;
+  }
+  function run(){if(!patch()){var o=new MutationObserver(function(){if(patch())o.disconnect();});o.observe(document.body,{childList:true,subtree:true});setTimeout(function(){patch();o.disconnect();},4000);}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);
+  else run();
+})();
+</script>
+
 </body>
 </html>
